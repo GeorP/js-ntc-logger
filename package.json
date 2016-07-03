@@ -1,0 +1,35 @@
+{
+  "ava": {
+    "files": [
+      "tests/*.js"
+    ]
+  },
+  "scripts": {
+    "build": "rm -rf dist; tsc",
+    "test": "ava"
+  },
+  "devDependencies": {
+    "ava": "^0.15.2"
+  },
+  "name": "nestor-the-chronicler",
+  "description": "Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorP/Nestor-the-Chronicler.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "log",
+    "logger"
+  ],
+  "author": "Georgiy Podsvyetov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GeorP/Nestor-the-Chronicler/issues"
+  },
+  "homepage": "https://github.com/GeorP/Nestor-the-Chronicler#readme"
+}
