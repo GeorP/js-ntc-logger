@@ -1,9 +1,6 @@
 import { ILogHandler } from './i/ILogHandler';
-import { ILoggingInterface } from './i/ILoggingInterface';
+import { ILoggingInterface, ILoggingInterfaceConstructor } from './i/ILoggingInterface';
 import { ILogRecord, ILogRecordFactory } from './i/ILogRecord';
-import { ILogFilter } from './i/ILogFilter';
-import { ILogFormatter } from './i/ILogFormatter';
-import { ILogWriter } from './i/ILogWriter';
 
 /**
  * Provides log functionality
@@ -16,7 +13,7 @@ export class Logger {
     protected _handlers: ILogHandler[];
     protected _loggingInterface: ILoggingInterface;
 
-    constructor (logRecordFactory: ILogRecordFactory, LoggingInterface) {
+    constructor (logRecordFactory: ILogRecordFactory, LoggingInterface: ILoggingInterfaceConstructor) {
         this._handlers = [];
 
         /**
@@ -27,7 +24,7 @@ export class Logger {
         this._loggingInterface = new LoggingInterface(
             logRecordFactory,
             {location: '', tags: []},
-            record => this.save(record)
+            (record: ILogRecord) => this.save(record)
         );
     }
 
@@ -45,10 +42,9 @@ export class Logger {
      */
     save (logRecord: ILogRecord): void {
         this._handlers.forEach(
-            handler => setTimeout( // execute our handlers async
-                () => handler.handle(logRecord), 0
-            )
+            handler => handler.handle(logRecord)
         );
+        logRecord.erase();
     }
 
     /**

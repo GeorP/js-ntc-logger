@@ -1,3 +1,5 @@
+import { IError } from './i/IError';
+
                                             // Syslog levels: https://en.wikipedia.org/wiki/Syslog
                                             //_______________________________________________________________________________________________________
                                             //| Value |   Severity	   |  Keyword  |	Description	                                                 |
@@ -56,4 +58,22 @@ export function logLevelLabel (logLevel: string): string {
 export function hasLogLevel (tags: string[], searchLogLevels: string[]): string {
     const logLevel = tags.filter(tag => searchLogLevels.indexOf(tag) !== -1);
     return logLevel.length ? logLevel[0] : '';
+}
+
+interface ISerializedError {
+    type: string,
+    msg: string,
+    stack: string
+}
+
+/**
+ * Convert error object to simple object with error information
+ * Returns first met tag or empty string if log level not found
+ */
+export function serializeError (error: IError): ISerializedError {
+    return {
+        type: error.name,
+        msg: error.message,
+        stack: error.stack
+    }
 }

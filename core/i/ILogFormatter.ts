@@ -1,4 +1,4 @@
-import { ILogRecord } from './ILogRecord';
+import { ISerializedLogRecord } from './ISerializedLogRecord';
 
 /**
  * Interface of a Log Formatter
@@ -8,5 +8,5 @@ export interface ILogFormatter {
     /**
      * Generate string with information of a Log Record
      */
-    format (logRecord: ILogRecord):string;
+    format (logData: ISerializedLogRecord):string;
 }

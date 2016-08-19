@@ -141,7 +141,6 @@ export class LogRecord implements ILogRecord {
      */
     log () {
         this._saveLogFunc(this);
-        this.erase();
     }
 
     /**

@@ -1,5 +1,12 @@
 import { ILogRecord } from './ILogRecord';
 import { ISerializedError } from './ISerializedError';
+import { ILogRecordFactory } from './ILogRecord';
+import { ILoggerInterfaceOptions } from './ILoggerInterfaceOptions';
+
+
+export interface ILoggingInterfaceConstructor {
+    new (logRecordFactory: ILogRecordFactory, options: ILoggerInterfaceOptions, saveFunc: Function):ILoggingInterface
+}
 
 export interface ILoggingInterface {
 
@@ -21,7 +28,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    log (message:String, data:any, loc:string, tags:string[]):void
+    log (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Emergency tag and process it
@@ -30,7 +37,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    emerg (message:String, data:any, loc:string, tags:string[]):void
+    emerg (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Alert tag and process it
@@ -39,7 +46,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    alert (message:String, data:any, loc:string, tags:string[]):void
+    alert (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Critical tag and process it
@@ -48,7 +55,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    crit (message:String, data:any, loc:string, tags:string[]):void
+    crit (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Error tag and process it
@@ -57,7 +64,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    error (message:String, data:any, loc:string, tags:string[]):void
+    error (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Warning tag and process it
@@ -66,7 +73,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    warning (message:String, data:any, loc:string, tags:string[]):void
+    warning (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Notice tag and process it
@@ -75,7 +82,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    notice (message:String, data:any, loc:string, tags:string[]):void
+    notice (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Info tag and process it
@@ -84,7 +91,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    info (message:String, data:any, loc:string, tags:string[]):void
+    info (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Creates new Log record with Debug tag and process it
@@ -93,7 +100,7 @@ export interface ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    debug (message:String, data:any, loc:string, tags:string[]):void
+    debug (message: string, data?:any, loc?:string, tags?:string[]):void
 
     /**
      * Serialize error to object

@@ -31,6 +31,10 @@ export class LogHandler {
         if (!this._filter.match(logRecord)) {
             return;
         }
-        this._writer.save(this._formatter.format(logRecord));
+        const logData = logRecord.toObject();
+        setTimeout(() => {
+            this._writer.save(this._formatter.format(logData))
+        }, 0);
+
     }
 }

@@ -1,13 +1,10 @@
 import { ILoggingInterface } from './i/ILoggingInterface';
 import { ILogRecordFactory, ILogRecord } from './i/ILogRecord';
+import { IError } from './i/IError';
+import { ILoggerInterfaceOptions } from './i/ILoggerInterfaceOptions';
 
-import {joinLocation, mergeTags,
+import {joinLocation, mergeTags, serializeError,
     LOG_EMERGENCY, LOG_ALERT, LOG_CRITICAL, LOG_ERROR, LOG_WARNING, LOG_NOTICE, LOG_INFORMATIONAL, LOG_DEBUG} from './utils';
-
-interface LoggerInterfaceOptions {
-    tags: string[],
-    location: string
-}
 
 /**
  * Provides logging interface
@@ -19,7 +16,7 @@ export class LoggingInterface implements ILoggingInterface {
     protected _location: string;
     protected _logRecordFactory: ILogRecordFactory;
 
-    constructor (logRecordFactory: ILogRecordFactory, {tags = [], location = ''}: LoggerInterfaceOptions, saveFunc: Function) {
+    constructor (logRecordFactory: ILogRecordFactory, {tags = [], location = ''}: ILoggerInterfaceOptions, saveFunc: Function) {
         this._saveFunc = saveFunc;
         this._tags = tags;
         this._location = location;
@@ -39,7 +36,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param message Text message that should be logged
      * @returns Returns instance of log record, that can be modified before processing
      */
-    l (message):ILogRecord  {
+    l (message: string):ILogRecord  {
         return this._logRecordFactory.create(this.tags, this.location, message, this._saveFunc);
     }
 
@@ -50,7 +47,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    log (message, data=null, loc=null, tags=[]) {
+    log (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.l(message).data(data).loc(loc).tag(tags).log();
     }
 
@@ -61,7 +58,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    emerg (message, data=null, loc=null, tags=[]) {
+    emerg (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_EMERGENCY]));
     }
 
@@ -72,7 +69,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    alert (message, data=null, loc=null, tags=[]) {
+    alert (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_ALERT]));
     }
 
@@ -83,7 +80,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    crit (message, data=null, loc=null, tags=[]) {
+    crit (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_CRITICAL]));
     }
 
@@ -94,7 +91,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    error (message, data=null, loc=null, tags=[]) {
+    error (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_ERROR]));
     }
 
@@ -105,7 +102,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    warning (message, data=null, loc=null, tags=[]) {
+    warning (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_WARNING]));
     }
 
@@ -116,7 +113,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    notice (message, data=null, loc=null, tags=[]) {
+    notice (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_NOTICE]));
     }
 
@@ -127,7 +124,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    info (message, data=null, loc=null, tags=[]) {
+    info (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_INFORMATIONAL]));
     }
 
@@ -138,19 +135,15 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location, where this log done
      * @param tags List of tags attached for this specific log record
      */
-    debug (message, data=null, loc=null, tags=[]) {
+    debug (message: string, data:any = null, loc:string = null, tags:string[] = []) {
         this.log(message, data, loc, mergeTags(tags, [LOG_DEBUG]));
     }
 
     /**
      * Serialize error to object
      */
-    serializeError (error) {
-        return {
-            type: error.name,
-            msg: error.message,
-            stack: error.stack
-        }
+    serializeError (error: IError) {
+        return serializeError(error);
     }
 
     /**
@@ -158,7 +151,7 @@ export class LoggingInterface implements ILoggingInterface {
      * @param loc Location that will be added to location of the current logging interface
      * @param tags List of tags that will be merged with tags of the current logging interface
      */
-    getInterface (loc, tags) {
+    getInterface (loc: string, tags: string[]) {
         return new LoggingInterface(this._logRecordFactory,
             {
                 tags: mergeTags(this._tags.slice(), tags),

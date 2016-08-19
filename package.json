@@ -9,7 +9,10 @@
     "test": "ava"
   },
   "devDependencies": {
-    "ava": "^0.15.2"
+    "ava": "^0.15.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-uglify": "^2.0.0"
   },
   "name": "nestor-the-chronicler",
   "description": "Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side",
