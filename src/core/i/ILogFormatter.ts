@@ -10,3 +10,9 @@ export interface ILogFormatter {
      */
     format (logData: ISerializedLogRecord):string;
 }
+
+export interface ILogFormatterFactory {
+    entityName: string;
+
+    create (): ILogFormatter;
+}

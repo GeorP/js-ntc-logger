@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "system",
+    "target": "es5",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "rootDir": ".",
+    "out": "dist/browser/logger.min.js"
+  },
+  "include": [
+    "src/**/*",
+    "index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "typings"
+  ]
+}

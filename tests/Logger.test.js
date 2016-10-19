@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Logger } from '../dist/core/Logger';
+import { Logger } from '../dist/es6/core/Logger';
 
 const logRecordFactoryMock = {};
 
@@ -109,7 +109,9 @@ test.cb('Logger should should execute handle method for registered log handler d
 
     const h = new LogHandlerSpy('test_handler');
     const l = getNewLogger().registerHandler(h);
-    const logRecord = {};
+    const logRecord = {
+        erase: function (){}
+    };
 
     l.save(logRecord);
 
@@ -127,7 +129,9 @@ test.cb('Logger should should execute handle method for each registered log hand
     const l = getNewLogger()
         .registerHandler(h1)
         .registerHandler(h2);
-    const logRecord = {};
+    const logRecord = {
+        erase: function (){}
+    };
 
     l.save(logRecord);
 
@@ -143,7 +147,10 @@ test.cb('Logger should pass log record to the registered handler during save', t
 
     const h = new LogHandlerSpy('test_handler');
     const l = getNewLogger().registerHandler(h);
-    const logRecord = {data: true};
+    const logRecord = {
+        data: true,
+        erase: function (){}
+    };
 
     l.save(logRecord);
 

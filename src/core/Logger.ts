@@ -1,3 +1,4 @@
+import { ILogger } from './i/ILogger';
 import { ILogHandler } from './i/ILogHandler';
 import { ILoggingInterface, ILoggingInterfaceConstructor } from './i/ILoggingInterface';
 import { ILogRecord, ILogRecordFactory } from './i/ILogRecord';
@@ -5,7 +6,7 @@ import { ILogRecord, ILogRecordFactory } from './i/ILogRecord';
 /**
  * Provides log functionality
  */
-export class Logger {
+export class Logger implements ILogger {
 
     /**
      * List of handlers registered in Logger
@@ -57,7 +58,7 @@ export class Logger {
     /**
      * Register new log handler
      */
-    registerHandler (handler: ILogHandler): Logger {
+    registerHandler (handler: ILogHandler): ILogger {
         this._handlers.push(handler);
         return this;
     }
@@ -66,7 +67,7 @@ export class Logger {
      * Remove registered handler by it's name
      * @param name
      */
-    removeHandler (name: string) {
+    removeHandler (name: string): void {
         this._handlers.map((h, i) => h.name === name ? i : null )
             .filter(i => i !== null)
             .forEach(i => this._handlers.splice(i, 1));

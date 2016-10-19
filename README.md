@@ -9,6 +9,6 @@ npm install
 
 Build project with Babel and run tests:
 ```bash
-npm build; npm test
+npm run build; npm run test
 ```
 

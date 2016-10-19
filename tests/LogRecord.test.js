@@ -1,8 +1,8 @@
 import test from 'ava';
-import { LogRecord } from '../dist/core/LogRecord';
+import { LogRecord } from '../dist/es6/core/LogRecord';
 
 import {joinLocation, mergeTags,
-	LOG_EMERGENCY, LOG_ALERT, LOG_CRITICAL, LOG_ERROR, LOG_WARNING, LOG_NOTICE, LOG_INFORMATIONAL, LOG_DEBUG} from '../dist/core/utils';
+	LOG_EMERGENCY, LOG_ALERT, LOG_CRITICAL, LOG_ERROR, LOG_WARNING, LOG_NOTICE, LOG_INFORMATIONAL, LOG_DEBUG} from '../dist/es6/core/utils';
 
 
 test('LogRecord should been instantiated without errors', t => {
@@ -285,43 +285,4 @@ test('LogRecord\'s method log should call save func and pass link to itself', t 
 	const l = new LogRecord([], ".", "test_message", saveFunc);
 	l.log();
 	t.true(data === l);
-});
-
-test('LogRecord\'s method log should call erase func', t => {
-	let counter = 0;
-	const l = new LogRecord([], ".", "test_message", function(){});
-	l.erase = () => counter++;
-	l.log();
-	t.true(counter === 1);
-});
-
-test('LogRecord\'s method erase should erase date', t => {
-	const l = new LogRecord([], ".", "test_message", function(){});
-	l.erase();
-	t.true(l.toObject().dt === null);
-});
-
-test('LogRecord\'s method erase should erase message', t => {
-	const l = new LogRecord([], ".", "test_message", function(){});
-	l.erase();
-	t.true(l.toObject().message === null);
-});
-
-test('LogRecord\'s method erase should erase data', t => {
-	const l = new LogRecord([], ".", "test_message", function(){});
-	l.data('some_data');
-	l.erase();
-	t.true(l.toObject().data === null);
-});
-
-test('LogRecord\'s method erase should erase tags', t => {
-	const l = new LogRecord(['one'], ".", "test_message", function(){});
-	l.erase();
-	t.true(l.toObject().tags === null);
-});
-
-test('LogRecord\'s method erase should erase location', t => {
-	const l = new LogRecord(['one'], ".", "test_message", function(){});
-	l.erase();
-	t.true(l.toObject().location === null);
 });

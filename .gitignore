@@ -2,8 +2,8 @@
 .idea/
 node_modules
 typings
-core/**/*.js
-core/**/*.js.map
+src/core/**/*.js
+src/core/**/*.js.map
 dist
 tmp
-
+npm-debug.log

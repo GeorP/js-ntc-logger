@@ -8,3 +8,10 @@ export interface ILogWriter {
      */
     save (item: string): void;
 }
+
+
+export interface ILogWriterFactory {
+    entityName: string;
+
+    create (): ILogWriter;
+}

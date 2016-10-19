@@ -1,11 +1,20 @@
-import { ILogFormatter } from '../core/i/ILogFormatter';
+import { ILogFormatter, ILogFormatterFactory } from '../core/i/ILogFormatter';
 import { ISerializedLogRecord } from '../core/i/ISerializedLogRecord';
 import { serializeError } from '../core/utils';
 
-export class FormatterSingleLine  implements ILogFormatter {
+export class FormatterSingleLine implements ILogFormatter {
+
+    // We need it for es5 compilation. Because in es5 we dont have classes and we can't just access FormatterSingleLine.name
+    static get entityName (): string {
+        return 'FormatterSingleLine';
+    }
+
+    static create (): ILogFormatter {
+        return new FormatterSingleLine();
+    }
 
     format (logData: ISerializedLogRecord):string {
-        const result =[];
+        const result: any[] = [];
 
         result.push(`[${logData.dt.toLocaleString()}]`);
         result.push(logData.message);

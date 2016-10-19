@@ -5,14 +5,14 @@
     ]
   },
   "scripts": {
-    "build": "rm -rf dist; tsc",
+    "build-es5": "rm -rf dist/es5; tsc -p ./tsconfig.es5.json",
+    "build-es6": "rm -rf dist/es6; tsc -p ./tsconfig.es6.json",
+    "build-browser": "rm -rf dist/browser; tsc -p ./tsconfig.browser.json",
+    "build": "npm run build-es5 & npm run build-es6",
     "test": "ava"
   },
   "devDependencies": {
-    "ava": "^0.15.2",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
-    "gulp-uglify": "^2.0.0"
+    "ava": "^0.15.2"
   },
   "name": "nestor-the-chronicler",
   "description": "Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side",
