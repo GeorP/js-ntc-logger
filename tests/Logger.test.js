@@ -1,5 +1,5 @@
 import test from 'ava';
-import { Logger } from '../dist/es6/core/Logger';
+import { Logger } from '../dist/es6/src/core/Logger';
 
 const logRecordFactoryMock = {};
 

@@ -1,8 +1,8 @@
 import test from 'ava';
-import { LoggingInterface } from '../dist/es6/core/LoggingInterface';
+import { LoggingInterface } from '../dist/es6/src/core/LoggingInterface';
 
 import {joinLocation, mergeTags,
-    LOG_EMERGENCY, LOG_ALERT, LOG_CRITICAL, LOG_ERROR, LOG_WARNING, LOG_NOTICE, LOG_INFORMATIONAL, LOG_DEBUG} from '../dist/es6/core/utils';
+    LOG_EMERGENCY, LOG_ALERT, LOG_CRITICAL, LOG_ERROR, LOG_WARNING, LOG_NOTICE, LOG_INFORMATIONAL, LOG_DEBUG} from '../dist/es6/src/core/utils';
 
 class logRecordFactoryMock { //used as log record factory
     constructor () {

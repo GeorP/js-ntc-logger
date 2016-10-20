@@ -3,15 +3,37 @@ _NTC - is abbreviation of [Nestor the Chronicler](https://en.wikipedia.org/wiki/
 
 Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side
 
-Once you checkout the project, please don't forget to do:
+#### Install with npm
+
 ```bash
-npm install
+npm install js-ntc-logger 
 ```
 
+#### Or clone repository on github
 
-Build project with Babel and run tests:
+You can clone GitHub repository [https://github.com/GeorP/js-ntc-logger](https://github.com/GeorP/js-ntc-logger):
+
 ```bash
-npm run build; npm run test
+git clone https://github.com/GeorP/js-ntc-logger.git
+```
+
+Once you clone the project, got to project folder and install dependencies:
+
+```bash
+cd js-ntc-logger 
+npm install 
+```
+
+Project is written with TypeScript, so you need a compiler. Please follow installation instructions on [https://www.typescriptlang.org](https://www.typescriptlang.org)
+
+Once you get TypeScript, you can compile ES6, ES5 and browser with SystemJS loader versions.:
+```bash
+npm run build
+```
+
+To run unit tests use:
+```bash
+npm run test
 ```
 
 ## Idea and concept
@@ -82,8 +104,10 @@ there should be much difference in initialization and use).
  
 ```JavaScript
 
-const LoggerFactory = require('./index').LoggerFactory;
-let l = LoggerFactory.getInterface("root");
+const NtcLogger = require('js-ntc-logger').NtcLogger;
+let logger = NtcLogger.createDefaultLogger();
+let l = logger.getInterface();
+
 l.log("Just message is enough");
 
 ```
