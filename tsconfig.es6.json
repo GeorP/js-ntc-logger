@@ -7,12 +7,12 @@
   },
   "include": [
     "src/**/*",
-    "index.ts",
     "examples.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "typings"
+    "typings",
+    "index.ts"
   ]
 }

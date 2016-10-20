@@ -1,4 +1,6 @@
-# Nestor-the-Chronicler
+#JS-NTC-Logger
+_NTC - is abbreviation of [Nestor the Chronicler](https://en.wikipedia.org/wiki/Nestor_the_Chronicler)_
+
 Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side
 
 Once you checkout the project, please don't forget to do:

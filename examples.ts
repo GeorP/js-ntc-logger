@@ -1,7 +1,7 @@
-import {LoggerFactory} from './index';
+import { NtcLogger } from './src/ntc-logger';
 
 // Create default logger: log all records to console, format them as single line
-let logger = LoggerFactory.createDefaultLogger();
+let logger = NtcLogger.createDefaultLogger();
 
 // Before you start, you should get Logging Interface. It can be hierarchical, it means that in our case variable 'l'
 // also has method 'getInterface', if you call it - it will inherits all metadata of our 'root' logging interface
@@ -24,7 +24,7 @@ l.log("Initialize with config", {apiUrl: 'http://api.some.host'});
 // You can specify location for concrete log record. In can be useful if you would like to point concrete method name
 // or specify a class
 l.log("Initialize pagination module", {perPage: 20}, 'catalog');
-// As you can see, location will iherits metadata of logging interface, you should see something like:
+// As you can see, location will inherits metadata of logging interface, you should see something like:
 // [10/19/2016, 10:32:55 PM]	Initialize pagination module	.root.catalog	{"perPage":20}
 
 

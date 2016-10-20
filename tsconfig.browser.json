@@ -4,16 +4,17 @@
     "target": "es5",
     "sourceMap": true,
     "noImplicitAny": true,
-    "rootDir": ".",
+    "rootDir": "./src",
     "out": "dist/browser/logger.min.js"
   },
   "include": [
-    "src/**/*",
-    "index.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "typings"
+    "typings",
+    "examples.ts",
+    "index.ts"
   ]
 }

@@ -17,7 +17,7 @@
   "name": "nestor-the-chronicler",
   "description": "Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/es6/src/ntc-logger.js",
   "dependencies": {},
   "repository": {
     "type": "git",
