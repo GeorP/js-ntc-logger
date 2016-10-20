@@ -27,3 +27,5 @@ l.log("Initialize pagination module", {perPage: 20}, 'catalog');
 // As you can see, location will iherits metadata of logging interface, you should see something like:
 // [10/19/2016, 10:32:55 PM]	Initialize pagination module	.root.catalog	{"perPage":20}
 
+
+l.log("Initialize catalog tree", {version: '1.0.1'}, 'catalogLoaded', ['CatalogTree']);

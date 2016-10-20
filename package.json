@@ -8,7 +8,7 @@
     "build-es5": "rm -rf dist/es5; tsc -p ./tsconfig.es5.json",
     "build-es6": "rm -rf dist/es6; tsc -p ./tsconfig.es6.json",
     "build-browser": "rm -rf dist/browser; tsc -p ./tsconfig.browser.json",
-    "build": "npm run build-es5 & npm run build-es6",
+    "build": "npm run build-es5 & npm run build-es6 & npm run build-browser",
     "test": "ava"
   },
   "devDependencies": {

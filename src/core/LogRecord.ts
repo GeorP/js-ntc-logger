@@ -137,7 +137,7 @@ export class LogRecord implements ILogRecord {
     }
 
     /**
-     * Process log record and erase log record
+     * Process log record
      */
     log () {
         this._saveLogFunc(this);
