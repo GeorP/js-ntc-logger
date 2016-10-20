@@ -14,14 +14,17 @@
   "devDependencies": {
     "ava": "^0.15.2"
   },
-  "name": "nestor-the-chronicler",
+  "name": "js-ntc-logger",
   "description": "Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side",
   "version": "1.0.0",
   "main": "dist/es6/src/ntc-logger.js",
   "dependencies": {},
+  "directories": {
+    "lib": "src"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GeorP/Nestor-the-Chronicler.git"
+    "url": "git+https://github.com/GeorP/js-ntc-logger.git"
   },
   "keywords": [
     "js",
@@ -29,10 +32,10 @@
     "log",
     "logger"
   ],
-  "author": "Georgiy Podsvyetov",
+  "author": "Georgiy Podsvyetov <podsvetov@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GeorP/Nestor-the-Chronicler/issues"
+    "url": "https://github.com/GeorP/js-ntc-logger/issues"
   },
-  "homepage": "https://github.com/GeorP/Nestor-the-Chronicler#readme"
+  "homepage": "https://github.com/GeorP/js-ntc-logger#readme"
 }
