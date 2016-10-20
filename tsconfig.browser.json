@@ -5,7 +5,7 @@
     "sourceMap": true,
     "noImplicitAny": true,
     "rootDir": "./src",
-    "out": "dist/browser/logger.min.js"
+    "out": "dist/browser/js-ntc-logger.min.js"
   },
   "include": [
     "src/**/*"
