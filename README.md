@@ -16,6 +16,13 @@ Flexible, configurable JavaScript logger, that can be used both on front-end and
     * [Do logging](#do-logging)
         * [Immediate log record creation](#immediate-log-record-creation)
         * [Log record construction](#log-record-construction)
+* [Logs processing](#logs-processing)
+    * [Filters in place](#filters-in-place)
+        * [FilterAny](#filterany)
+    * [Formatters in place](#formatters-in-place)
+        * [FormatterSingleLine](#formattersingleline)
+    * [Writers in place](#writers-in-place)
+        * [WriterToConsole](#writertoconsole)
 * [Logging interface](#logging-interface)
 * [Log record interface](#log-record-interface)
 * [Syslog levels](#syslog-levels)
@@ -386,6 +393,150 @@ Result:
 
 The main advantage of this that you can create log record in one place and pass it to some function to attach data or 
 metadata or just save it later.
+
+
+## Logs processing
+
+We already know how to create log records, now it's time to discuss how we process them.
+As you remember from [Idea and concept](#idea-and-concept), to process log records we have special entity - Log handler 
+that consist of Filter, Formatter and Writer. Our Logger can have multiple log handlers registered at the time or don't 
+have them at all. You may think of a Logger as some of coordinator, it receives created log records and pass them for 
+processing to log handlers, after that it erase log record.
+
+Algorithm of log handler is simple: it checks if log record pass Filter, if yes - uses Formatter to serialize log record 
+to string and pass this string to Writer.
+
+```
++-------------+
+| Logger      |
++-------------+
+   |
+   | process Log Record
+   |
++-------------+
+| Log Handler |
++-------------+
+   |
+   | Match filter?
+   |
++-------------+ No
+| Filter      |------| Do nothing
++-------------+
+   |
+   | Serialize to string
+   |
++-------------+
+| Formatter   |
++-------------+
+   |
+   | Do something with this string, e.g. log to console,
+   | display to a user, write to file, write to database,
+   | send via AJAX or sockets, print 
+   | or do wahtever you want.
+   |
++-------------+
+| Writer      |
++-------------+
+ 
+```
+
+So, now we can have set of different filters, formatters and writers, we can implement our own if we need. And then we 
+just configure our Logger by registering log handlers with needed combination of filter, formatter and writer.
+
+In our examples we use default logger:
+
+```JavaScript
+
+const NtcLogger = require('js-ntc-logger').NtcLogger;
+let logger = NtcLogger.createDefaultLogger();
+
+```
+
+Lets see what actually happens inside:
+
+```JavaScript
+
+const ntcLogger = require('js-ntc-logger');
+const { Logger, LogRecord, LoggingInterface, LogHandler, 
+        FilterAny, FormatterSingleLine, WriterToConsole } = ntcLogger;
+
+let logger = new Logger(LogRecord, LoggingInterface);
+
+let handler = new LogHandler(
+    'any_to_console_as_single_line',
+    FilterAny.create(),
+    FormatterSingleLine.create(),
+    WriterToConsole.create()
+);
+logger.registerHandler(handler);
+let l = logger.getInterface();
+
+l.log("Just message is enough");
+
+```
+
+So, as you can see, you can manually configure logger.
+
+Also you can use LoggerFactory, to configure logger. Let's do the same with the factory:
+
+```JavaScript
+
+const NtcLogger = require('js-ntc-logger').NtcLogger;
+let logger = NtcLogger.createLogger([
+    {
+        name: 'any_to_console_as_single_line',
+        filter: 'FilterAny',
+        formatter: 'FormatterSingleLine',
+        writer: 'WriterToConsole'
+    }
+]);
+let l = logger.getInterface();
+l.log("Just message is enough");
+
+```
+
+As you can see, to configure custom logger you should specify configuration of log handlers. It simple list of objects, 
+that describes log handler. Log handler option defined by `ILogHandlerOptions` interface in `/src/core/i/ILoggerFactory.ts`
+  
+```typescript
+
+interface ILogHandlerOptions {
+    name: string;
+    filter: string;
+    formatter: string;
+    writer: string;
+}
+
+```
+Where: 
+* `name` - name of the log handler, it's used only to identify concrete log handler in list of log handler, nothing more 
+* `filter` - Name of the filter, registered in logger factory 
+* `formatter` - Name of the formatter, registered in logger factory 
+* `writer` - Name of the writer, registered in logger factory
+
+
+### Filters in place
+
+#### FilterAny
+
+It's simple filter that pass all log records.
+
+
+### Formatters in place
+
+#### FormatterSingleLine
+
+Tis formatter serialize log record to next shape:
+
+```javascript
+`[${date.toLocaleString()}]  ${message}  ${location}  ${JSON.serialize(data)}  ${tags}`
+```
+
+### Writers in place
+
+#### WriterToSingleLine
+
+This writer just print all serialized log records to console, using `console.log()`
 
 
 ## Logging interface
