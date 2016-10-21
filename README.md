@@ -1,7 +1,27 @@
 #JS-NTC-Logger
 _NTC - is abbreviation of [Nestor the Chronicler](https://en.wikipedia.org/wiki/Nestor_the_Chronicler)_
 
-Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side
+Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side.
+
+## Documentation
+
+* [Installation](#installation)
+    * [Install with npm](#install-with-npm)
+    * [Or clone repository on github](#or-clone-repository-on-github)
+* [Idea and concept](#idea-and-concept)
+* [How to use](#how-to-use)
+    * [Initialization on back-end](#initialization-on-back-end)
+    * [What is logging interface](#What-is-logging-interface)
+        * [Get logging interface](#get-logging-interface)
+    * [Do logging](#do-logging)
+        * [Immediate log record creation](#immediate-log-record-creation)
+        * [Log record construction](#log-record-construction)
+* [Logging interface](#logging-interface)
+* [Log record interface](#log-record-interface)
+* [Syslog levels](#syslog-levels)
+
+
+## Installation
 
 #### Install with npm
 
@@ -97,7 +117,7 @@ Of course you can define your own filters, formatters and writers.
 
 Library initially developed with TypeScript, and also it compiled to ES5, ES6 and browser version with SystemJS loader.
 
-### Initialization Back-end
+### Initialization on back-end
 
 For the back-end we going to use ES6 version (you also can find version compiled in ES5 and go with it, 
 there should be much difference in initialization and use).
@@ -112,7 +132,7 @@ l.log("Just message is enough");
 
 ```
 
-### Usage
+### What is logging interface
 
 So, we have configured logger, with all needed log handlers. What we can do now?
 First of all, Logger is central entity and it coordinates log processing, but it dont have methods to log, to do it 
@@ -298,7 +318,7 @@ Init application	.loader	{"modules":["user_profile","permissions","articles","co
 [10/21/2016, 12:25:48 PM]	Permission loading error	.transport	server not responded	initialization
 ```
 
-##### Syslog levels
+##### Point syslog levels
 
 Also you can easily attach tag that identify syslog levels, if you are not familiar with it, please take a look 
 [here](#syslog-levels). For this you have special methods: `emerg`, `alert`, `crit`, `error`, `warning`, `notice`, 
