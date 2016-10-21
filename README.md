@@ -97,7 +97,7 @@ Of course you can define your own filters, formatters and writers.
 
 Library initially developed with TypeScript, and also it compiled to ES5, ES6 and browser version with SystemJS loader.
 
-### Back-end
+### Initialization Back-end
 
 For the back-end we going to use ES6 version (you also can find version compiled in ES5 and go with it, 
 there should be much difference in initialization and use).
@@ -112,9 +112,263 @@ l.log("Just message is enough");
 
 ```
 
+### Usage
+
+So, we have configured logger, with all needed log handlers. What we can do now?
+First of all, Logger is central entity and it coordinates log processing, but it dont have methods to log, to do it 
+we should get logging interface, to be able to actually do logging.
+The simplest way is to call `getInterface` method of a logger, you can find detailed description of it [here](#logging-interface). 
+
+```JavaScript
+let l = logger.getInterface();
+```
+
+After you get the logging interface you can log all you want. The basic way is to log just a message:
+
+```JavaScript
+l.log("Just message is enough");
+```
+
+#### Get logging interface
+
+There are two optional parameters in `getInterface` method of a Logger: `location` and `tags`. `location` is a simple 
+string that describe place where this logging interface will be used. You can leave it empty, if you have simple 
+application that is quite small and you can easily identify where log been done. You can pass something like `root` or
+`app` or name of your application. If you pass location, all log records done with current logging interface will have
+it metadata, for example is you use default logger, like in example:
+
+```JavaScript
+let l = logger.getInterface('root');
+l.log("Just message is enough");
+```
+
+you should see in console something like this:
+
+```
+[10/21/2016, 11:50:28 AM]	Just message is enough	.root
+```
+
+As you can see log record has passed massage and also location inherited from logging interface, and time when this log 
+record been done.
+
+Usually we can represent our appliaction like tree of components/modules. And our logger interface can be inherited. 
+You just call `getInterface` method of existing logging interface and of course you can specify location:
+  
+```JavaScript
+const rootL = logger.getInterface('root');
+rootL.log("Init our application");
+
+const subL = rootL.getInterface('Permissions');
+subL.log('Init submodule Permissions');
+//...
+subL.log("Load user's permissions from server");
+```
+Output with default logger should be like this:
+
+```
+[10/21/2016, 11:58:06 AM]	Init our application	.root
+[10/21/2016, 11:58:06 AM]	Init submodule Permissions	.root.Permissions
+[10/21/2016, 11:58:06 AM]	Load user's permissions from server	.root.Permissions
+```
+
+You can inherit location as many time as you want.
+
+The second parameters of logging interface is `tags`. Tags is array of strings, tags will be attached to each log record
+made by this logging interface.
+
+```JavaScript
+let l = logger.getInterface('root', ['example', 'tmp']);
+l.log("Just message is enough");
+```
+
+And you should see in console:
+
+```
+[10/21/2016, 12:02:30 PM]	Just message is enough	.root		example,tmp
+```
+
+The same as location, tags will be inherited for child logging interfaces:
+
+```JavaScript
+const rootL = logger.getInterface('root', ['core']);
+rootL.log("Init our application");
+
+const subL = rootL.getInterface('Permissions', ['service']);
+subL.log('Init submodule Permissions');
+//...
+subL.log("Load user's permissions from server");
+```
+
+And result:
+
+```
+[10/21/2016, 12:04:58 PM]	Init our application	.root		core
+[10/21/2016, 12:04:58 PM]	Init submodule Permissions	.root.Permissions		core,service
+[10/21/2016, 12:04:58 PM]	Load user's permissions from server	.root.Permissions		core,service
+```
+
+### Do logging
+
+As you already know we do logging with our Logging Interface. There is two possible way to do log record: immediately 
+do log record or construct it and then save.
+
+#### Immediate log record creation
+
+Main instrument that you have for it is method `log`, it cat take four parameters: `message`, `data`, `location` and 
+`tags`. All of them, except `message` are optional. We already know how to use it just passing message, so lets talk 
+now about additional parameters.
+
+##### Parameter `data`
+
+We can attach `data` to our log record. It's simple, we passing any informationw e want as second parameter:
+
+```JavaScript
+l.log("Init application", {modules: [
+	"user_profile",
+	"permissions",
+	"articles",
+	"comments"
+]});
+
+l.log("Permission loading error", "server not responded");
+```  
+
+You should see in console:
+
+```
+[10/21/2016, 12:17:18 PM]	Init application    {"modules":["user_profile","permissions","articles","comments"]}
+[10/21/2016, 12:17:18 PM]	Permission loading error    server not responded
+```
+
+In the same way you can pass any JavaScript type and it will be attached to this log record. How this data processed and 
+serialized we will discuss when talk about Formatters.
 
 
-### Logging interface
+##### Parameter `location`
+
+It's easy. It works completely the same as with logging interface. The only difference is that location will attached 
+for one concrete log record. 
+
+```JavaScript
+const l = logger.getInterface('root');
+
+l.log("Init application", {modules: [
+	"user_profile",
+	"permissions",
+	"articles",
+	"comments"
+]}, 'loader');
+
+l.log("Permission loading error", "server not responded", 'transport');
+
+```  
+
+Our result in console:
+
+```
+[10/21/2016, 12:23:03 PM]	Init application	.root.loader	{"modules":["user_profile","permissions","articles","comments"]}
+[10/21/2016, 12:23:03 PM]	Permission loading error	.root.transport	server not responded
+```
+
+As you can see it add to location, inherited from our logging interface.
+
+
+##### Parameter `tags`
+
+And the same with tags. We just specify tags for concrete log record:
+
+```JavaScript
+const l = logger.getInterface();
+
+l.log("Init application", {modules: [
+	"user_profile",
+	"permissions",
+	"articles",
+	"comments"
+]}, 'loader', ['initialization']);
+
+l.log("Permission loading error", "server not responded", 'transport', ['initialization']);
+
+```  
+
+And result:
+
+```
+Init application	.loader	{"modules":["user_profile","permissions","articles","comments"]}	initialization
+[10/21/2016, 12:25:48 PM]	Permission loading error	.transport	server not responded	initialization
+```
+
+##### Syslog levels
+
+Also you can easily attach tag that identify syslog levels, if you are not familiar with it, please take a look 
+[here](#syslog-levels). For this you have special methods: `emerg`, `alert`, `crit`, `error`, `warning`, `notice`, 
+`info`, `debug`. All these methods have the same signature as `log` method. All they do, they call `log` method and pass 
+appropriate tag.
+
+```JavaScript
+const l = logger.getInterface();
+
+l.info("Init application", {modules: [
+	"user_profile",
+	"permissions",
+	"articles",
+	"comments"
+]}, 'loader', ['initialization']);
+
+l.emerg("Permission loading error", "server not responded", 'transport', ['initialization']);
+
+```  
+
+You will see in console:
+
+```
+[10/21/2016, 12:47:06 PM]	Init application	.loader	{"modules":["user_profile","permissions","articles","comments"]}	initialization,__info
+[10/21/2016, 12:47:06 PM]	Permission loading error	.transport	server not responded	initialization,__emerg
+```
+
+As you can see tags that represent syslog levels starts with `__` in order not to mix with user tags that can have the 
+same name.
+
+
+#### Log record construction
+
+Alternative way is to construct the log record. For this logging interface has method `l` that accept one parameter 
+`message` and returns Log Record.
+To save this log record you should call `log` method on it.
+
+```JavaScript
+const l = logger.getInterface();
+let logRecord = l.l('Constructing log record');
+logRecord.log();
+```
+
+And result:
+
+```
+[10/21/2016, 12:56:57 PM]	Constructing log record
+```
+
+Also log record has methods, that we already familiar with: `data` to attach data, `tag` to attach list of tags, `loc` 
+to specify location. And methods to attach syslog tag: `emerg`, `alert`, `crit`, `error`, `warning`, `notice`, `info`, 
+`debug`. Log record implements fluent interface, so all of this methods return log record itself, so you can easily 
+manipulate it.
+ 
+```JavaScript
+const l = logger.getInterface();
+l.l('Constructing log record').loc('example').info().log();
+```
+
+Result:
+
+```
+[10/21/2016, 1:07:20 PM]	Constructing log record	.example    __info
+```
+
+The main advantage of this that you can create log record in one place and pass it to some function to attach data or 
+metadata or just save it later.
+
+
+## Logging interface
 
 ###### log
 `log (message: string, data?:any, loc?:string, tags?:string[]):void`
@@ -238,7 +492,7 @@ Get new logging interface that inherits tag and location
 * `tags` -  List of tags that will be merged with tags of the current logging interface
 
 
-### Log record interface
+## Log record interface
 
 Log record object implements Fluent interface, that allow you easily manipulate it.
 
