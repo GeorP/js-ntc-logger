@@ -11,7 +11,7 @@ Flexible, configurable JavaScript logger, that can be used both on front-end and
 * [Idea and concept](#idea-and-concept)
 * [How to use](#how-to-use)
     * [Initialization on back-end](#initialization-on-back-end)
-    * [What is logging interface](#What-is-logging-interface)
+    * [What is logging interface](#what-is-logging-interface)
         * [Get logging interface](#get-logging-interface)
     * [Do logging](#do-logging)
         * [Immediate log record creation](#immediate-log-record-creation)
