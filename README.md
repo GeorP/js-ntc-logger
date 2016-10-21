@@ -534,7 +534,7 @@ Tis formatter serialize log record to next shape:
 
 ### Writers in place
 
-#### WriterToSingleLine
+#### WriterToConsole
 
 This writer just print all serialized log records to console, using `console.log()`
 
