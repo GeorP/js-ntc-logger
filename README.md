@@ -1,7 +1,7 @@
 #JS-NTC-Logger
 _NTC - is abbreviation of [Nestor the Chronicler](https://en.wikipedia.org/wiki/Nestor_the_Chronicler)_
 
-Flexible, configurable JavaScript logger, that can be used both on front-end and back-end side.
+Flexible, configurable JavaScript logger, that can be used both in the browser and with NodeJS.
 
 ## Documentation
 
